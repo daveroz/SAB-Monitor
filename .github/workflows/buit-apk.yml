@@ -1,14 +1,27 @@
 name: Build APK
+# Builds SAB Monitor on every push (and on demand from the Actions tab). Every run uploads
+# SAB_Monitor.apk as an artifact. Runs on main also publish it to the "latest" release, which gives
+# a stable download link that always has the newest build:
+# https://github.com/daveroz/SAB-Monitor/releases/download/latest/SAB_Monitor.apk
+#
+# Every build is signed with the same key (assets/signing/debug.keystore, put in place by
+# scripts/android-setup.sh), so each new APK installs over the last one.
 on:
   push:
-    branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: write # to publish the APK on the release
+
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   apk:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Locate project folder
         run: |
@@ -20,9 +33,9 @@ jobs:
           fi
           echo "APP_DIR=$(dirname "$f")" >> "$GITHUB_ENV"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: 22 }
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with: { distribution: temurin, java-version: 21 }
 
       - run: npm install
@@ -36,9 +49,44 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Name the APK
-        run: cp "${{ env.APP_DIR }}/android/app/build/outputs/apk/debug/app-debug.apk" "${{ env.APP_DIR }}/SAB_Monitor.apk"
+        run: cp "${{ env.APP_DIR }}/android/app/build/outputs/apk/debug/app-debug.apk" SAB_Monitor.apk
 
-      - uses: actions/upload-artifact@v4
+      # Only an APK signed with the repo's fixed key can update the installed app, so only that one
+      # is published.
+      - name: Check the signing key
+        run: |
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          actual=$("$apksigner" verify --print-certs SAB_Monitor.apk | sed -n 's/.*certificate SHA-256 digest: //p' | head -1)
+          expected=$(keytool -list -v -keystore "${{ env.APP_DIR }}/assets/signing/debug.keystore" -storepass android \
+            -alias androiddebugkey | sed -n 's/.*SHA256: //p' | tr -d ':' | tr 'A-F' 'a-f')
+          {
+            echo "### SAB Monitor, build ${GITHUB_RUN_NUMBER}"
+            echo '```'
+            echo "Signer SHA-256: $actual"
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+          if [ -n "$actual" ] && [ "$actual" = "$expected" ]; then
+            echo "SIGNED_WITH_FIXED_KEY=true" >> "$GITHUB_ENV"
+          else
+            echo "::warning::This APK isn't signed with assets/signing/debug.keystore, so it can't update the installed app and won't be published."
+          fi
+
+      - uses: actions/upload-artifact@v7
         with:
-          name: SAB_Monitor
-          path: ${{ env.APP_DIR }}/SAB_Monitor.apk
+          path: SAB_Monitor.apk
+          archive: false # download the APK itself, not a zip
+
+      - name: Publish to the latest release
+        if: env.SIGNED_WITH_FIXED_KEY == 'true' && github.ref_name == github.event.repository.default_branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          title="SAB Monitor (build ${GITHUB_RUN_NUMBER})"
+          notes="Built from ${GITHUB_SHA::7}. Installs over the previous version (same signing key)."
+          if gh release view latest > /dev/null 2>&1; then
+            gh release upload latest SAB_Monitor.apk --clobber
+            gh release edit latest --title "$title" --notes "$notes"
+          else
+            gh release create latest SAB_Monitor.apk --title "$title" --notes "$notes" --target "$GITHUB_SHA"
+          fi
