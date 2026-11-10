@@ -37,9 +37,11 @@ grep -q "androidx.work:work-runtime" "$GRADLE" || { echo "Could not add WorkMana
 
 # Fixed signing key in CI so every build is signed the same way and can update the installed app.
 # (CI runners otherwise generate a new random debug key each run -> "package conflict" on update.)
-if [ "${CI:-}" = "true" ] && [ -f assets/signing/debug.keystore ]; then
+# The workflow decodes it from the SIGNING_KEYSTORE_BASE64 repository secret into
+# SIGNING_KEYSTORE_FILE; debug builds use it as the debug key (password android, alias androiddebugkey).
+if [ "${CI:-}" = "true" ] && [ -n "${SIGNING_KEYSTORE_FILE:-}" ]; then
   mkdir -p "$HOME/.android"
-  cp assets/signing/debug.keystore "$HOME/.android/debug.keystore"
+  cp "$SIGNING_KEYSTORE_FILE" "$HOME/.android/debug.keystore"
 fi
 
 echo "Android project ready in ./android"
