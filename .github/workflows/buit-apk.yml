@@ -17,6 +17,12 @@ concurrency:
   group: build-apk-${{ github.ref }}
   cancel-in-progress: true
 
+# Optional: only needed if the key's password or alias isn't android / androiddebugkey.
+env:
+  SIGNING_KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+  SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+  SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -64,6 +70,16 @@ jobs:
       - name: Name the APK
         run: cp "${{ env.APP_DIR }}/android/app/build/outputs/apk/debug/app-debug.apk" SAB_Monitor.apk
 
+      # The build signs with the runner's own throwaway debug key; this replaces that signature
+      # with the fixed key, so the APK can update the installed app.
+      - name: Sign with the fixed key
+        if: env.SIGNING_KEYSTORE_FILE != ''
+        run: |
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          KS_PASS="${SIGNING_KEYSTORE_PASSWORD:-android}" KEY_PASS="${SIGNING_KEY_PASSWORD:-android}" \
+            "$apksigner" sign --ks "$SIGNING_KEYSTORE_FILE" --ks-pass env:KS_PASS \
+            --ks-key-alias "${SIGNING_KEY_ALIAS:-androiddebugkey}" --key-pass env:KEY_PASS SAB_Monitor.apk
+
       # Only an APK signed with the fixed key can update the installed app, so only that one is
       # published.
       - name: Check the signing key
@@ -72,8 +88,8 @@ jobs:
           actual=$("$apksigner" verify --print-certs SAB_Monitor.apk | sed -n 's/.*certificate SHA-256 digest: //p' | head -1)
           expected=""
           if [ -n "${SIGNING_KEYSTORE_FILE:-}" ]; then
-            expected=$(keytool -list -v -keystore "$SIGNING_KEYSTORE_FILE" -storepass android \
-              -alias androiddebugkey | sed -n 's/.*SHA256: //p' | tr -d ':' | tr 'A-F' 'a-f')
+            expected=$(keytool -list -v -keystore "$SIGNING_KEYSTORE_FILE" -storepass "${SIGNING_KEYSTORE_PASSWORD:-android}" \
+              -alias "${SIGNING_KEY_ALIAS:-androiddebugkey}" | sed -n 's/.*SHA256: //p' | tr -d ':' | tr 'A-F' 'a-f')
           fi
           {
             echo "### SAB Monitor, build ${GITHUB_RUN_NUMBER}"
