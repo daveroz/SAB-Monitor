@@ -293,9 +293,9 @@ export const SABMap: React.FC<SABMapProps> = ({
           // Add accuracy buffer circle safely
           const circle = L.circle([latitude, longitude], {
             radius: accuracy,
-            color: '#df8b35',
+            color: '#eb9438',
             weight: 1.5,
-            fillColor: '#c87624',
+            fillColor: '#c9792e',
             fillOpacity: 0.15,
           }).addTo(map);
           userCircleRef.current = circle;
@@ -305,8 +305,8 @@ export const SABMap: React.FC<SABMapProps> = ({
             className: 'sab-user-gps-marker',
             html: `
               <div class="relative flex items-center justify-center w-8 h-8 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-auto cursor-pointer">
-                <span class="absolute inline-flex h-8 w-8 rounded-full bg-[#df8b35] opacity-75 animate-ping"></span>
-                <span class="relative inline-flex rounded-full h-4 w-4 bg-[#c87624] border-2 border-white shadow-lg ring-1 ring-[#df8b35]"></span>
+                <span class="absolute inline-flex h-8 w-8 rounded-full bg-[#eb9438] opacity-75 animate-ping"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-[#c9792e] border-2 border-white shadow-lg ring-1 ring-[#eb9438]"></span>
               </div>
             `,
             iconSize: [32, 32],
@@ -320,20 +320,20 @@ export const SABMap: React.FC<SABMapProps> = ({
           }).addTo(map);
 
           marker.bindPopup(`
-            <div class="bg-gradient-to-r from-[#171b26] to-[#1e1a16] text-white p-2.5 rounded-t-lg text-center font-bold text-xs flex items-center justify-center gap-1.5 border-b border-[#2d251d]">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#df8b35] animate-pulse"></span>
+            <div class="bg-gradient-to-r from-[#0f1724] to-[#0f1724] text-white p-2.5 rounded-t-lg text-center font-bold text-xs flex items-center justify-center gap-1.5 border-b border-[#1d2938]">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#eb9438] animate-pulse"></span>
               <span class="text-white">Tu Ubicación GPS Actual</span>
             </div>
-            <div class="p-3 bg-[#11141e] text-xs space-y-1.5 text-slate-200">
-              <div class="flex justify-between border-b border-[#222938] pb-1">
-                <span class="text-[#718096]">Coordenadas:</span>
+            <div class="p-3 bg-[#0b1220] text-xs space-y-1.5 text-slate-200">
+              <div class="flex justify-between border-b border-[#1b2533] pb-1">
+                <span class="text-[#6f8091]">Coordenadas:</span>
                 <span class="font-mono font-semibold text-slate-100">${latitude.toFixed(5)}, ${longitude.toFixed(5)}</span>
               </div>
-              <div class="flex justify-between border-b border-[#222938] pb-1">
-                <span class="text-[#718096]">Precisión GPS:</span>
-                <span class="font-semibold text-[#df8b35]">±${Math.round(accuracy)} m</span>
+              <div class="flex justify-between border-b border-[#1b2533] pb-1">
+                <span class="text-[#6f8091]">Precisión GPS:</span>
+                <span class="font-semibold text-[#eb9438]">±${Math.round(accuracy)} m</span>
               </div>
-              <div class="text-[10px] text-[#718096] text-center pt-0.5">
+              <div class="text-[10px] text-[#6f8091] text-center pt-0.5">
                 Estás visualizando tu posición respecto a las estaciones IDIGER de Bogotá.
               </div>
             </div>
@@ -554,10 +554,11 @@ export const SABMap: React.FC<SABMapProps> = ({
 
       const geoLayer = L.geoJSON(localidadesGeoJson, {
         style: {
-          color: isDark ? '#df8b35' : '#c57220',
-          weight: 1.5,
+          color: isDark ? '#eb9438' : '#c9792e',
+          weight: 1,
+          className: 'sab-locality',
           opacity: 0.75,
-          fillColor: isDark ? '#df8b35' : '#c57220',
+          fillColor: isDark ? '#eb9438' : '#c9792e',
           fillOpacity: 0.02,
           dashArray: '4, 4',
         },
@@ -697,7 +698,7 @@ export const SABMap: React.FC<SABMapProps> = ({
           html: `
             <div class="flex items-center gap-1 select-none pointer-events-auto group cursor-pointer -translate-x-2 -translate-y-2">
               <img src="${tempCategory.iconSrc}" style="width: 18px; height: 18px; min-width: 18px; min-height: 18px;" class="shrink-0 drop-shadow-sm group-hover:scale-125 transition-transform" alt="" />
-              <span class="bg-[#11141e]/95 text-slate-100 font-extrabold text-xs px-1.5 py-0.5 rounded shadow-lg border border-slate-700/80 whitespace-nowrap leading-tight group-hover:bg-[#161a26] group-hover:border-amber-400/60">
+              <span class="bg-[#0b1220]/95 text-slate-100 font-extrabold text-xs px-1.5 py-0.5 rounded shadow-lg border border-slate-700/80 whitespace-nowrap leading-tight group-hover:bg-[#111a27] group-hover:border-amber-400/60">
                 ${temp != null && !isNaN(temp) ? temp.toFixed(1) : '--'} °C
               </span>
             </div>
@@ -716,7 +717,7 @@ export const SABMap: React.FC<SABMapProps> = ({
           html: `
             <div class="flex items-center gap-1 select-none pointer-events-auto group cursor-pointer -translate-x-2 -translate-y-2">
               <img src="${humCat.iconSrc}" style="width: 18px; height: 18px; min-width: 18px; min-height: 18px;" class="shrink-0 drop-shadow-sm group-hover:scale-125 transition-transform" alt="" />
-              <span class="bg-[#11141e]/95 text-slate-100 font-extrabold text-xs px-1.5 py-0.5 rounded shadow-lg border border-slate-700/80 whitespace-nowrap leading-tight group-hover:bg-[#161a26] group-hover:border-amber-400/60">
+              <span class="bg-[#0b1220]/95 text-slate-100 font-extrabold text-xs px-1.5 py-0.5 rounded shadow-lg border border-slate-700/80 whitespace-nowrap leading-tight group-hover:bg-[#111a27] group-hover:border-amber-400/60">
                 ${Math.round(hum)}%
               </span>
             </div>
@@ -757,7 +758,7 @@ export const SABMap: React.FC<SABMapProps> = ({
           : `Acumulado: ${station.ACUMULADODIA ?? 0} mm`;
 
       marker.bindTooltip(
-        `<div class="p-1 font-sans text-xs bg-[#11141e] text-slate-100 border border-[#252c3c] rounded shadow-lg">
+        `<div class="p-1 font-sans text-xs bg-[#0b1220] text-slate-100 border border-[#1d2938] rounded shadow-lg">
           <div class="font-bold text-white">${station.ESTACION}</div>
           <div class="text-[11px] text-slate-400">${station.LOCALIDAD} • ${time}</div>
           <div class="mt-0.5 font-semibold text-amber-400">${valDisplay}</div>
@@ -801,31 +802,33 @@ export const SABMap: React.FC<SABMapProps> = ({
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#0c0f17]">
+    <div className="relative w-full h-full overflow-hidden bg-transparent">
       {/* Map DOM Element */}
       <div
         ref={mapContainerRef}
         className="w-full h-full z-0 outline-none focus:outline-none focus:ring-0 select-none"
         aria-label="Mapa de Bogotá"
       />
+      {/* A faint veil of the stage's haze over the map, under the stations */}
+      <div className="sab-veil" aria-hidden="true" />
 
       {/* Top Right Map Controls: Basemap, GPS, Reset, and Radar */}
       <div className="absolute top-3 right-3 sm:right-4 z-20 flex flex-col items-end gap-2">
-        <div className="flex items-center gap-1.5 bg-[#151922]/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border border-[#252c3c]">
+        <div className="flex items-center gap-1.5 glass p-1.5 rounded-full shadow-xl border border-[#1d2938]">
           {/* Basemap Switcher */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setShowBasemapMenu(!showBasemapMenu)}
-              className="p-2 text-[#7f8da4] hover:text-[#df8b35] hover:bg-[#202738] rounded-xl transition cursor-pointer"
+              className="p-2 text-[#8fa0b3] hover:text-[#eb9438] hover:bg-[#152031] rounded-full transition cursor-pointer"
               title="Cambiar mapa base"
               aria-label="Cambiar mapa base"
             >
               <Layers className="w-4 h-4" />
             </button>
             {showBasemapMenu && (
-              <div className="absolute top-full right-0 mt-2 bg-[#151922]/98 backdrop-blur-md rounded-2xl shadow-2xl border border-[#252c3c] p-2 w-56 z-30 space-y-1">
-                <div className="text-[11px] font-bold text-[#8a9bb2] uppercase px-2 py-1 tracking-wider">
+              <div className="absolute top-full right-0 mt-2 glass rounded-xl shadow-2xl border border-[#1d2938] p-2 w-56 z-30 space-y-1">
+                <div className="text-[11px] font-bold text-[#8fa0b3] uppercase px-2 py-1 tracking-wider">
                   Capas Base
                 </div>
                 {Object.entries(BASEMAP_TILES).map(([key, config]) => (
@@ -838,8 +841,8 @@ export const SABMap: React.FC<SABMapProps> = ({
                     }}
                     className={`w-full text-left px-2.5 py-1.5 rounded-xl text-xs transition cursor-pointer ${
                       currentBasemap === key
-                        ? 'bg-[#df8b35]/20 text-[#df8b35] font-semibold border border-[#df8b35]/30'
-                        : 'text-slate-300 hover:bg-[#202738] hover:text-white'
+                        ? 'lit font-semibold'
+                        : 'text-slate-300 hover:bg-[#152031] hover:text-white'
                     }`}
                   >
                     {config.name}
@@ -856,18 +859,18 @@ export const SABMap: React.FC<SABMapProps> = ({
             disabled={isLocating}
             className={`p-2 rounded-xl transition flex items-center justify-center cursor-pointer ${
               isLocating
-                ? 'bg-[#202738] text-[#df8b35] animate-pulse'
+                ? 'bg-[#152031] text-[#eb9438] animate-pulse'
                 : hasLocation
-                ? 'bg-[#222b3c] text-[#df8b35] ring-1 ring-[#df8b35]/40 shadow-xs'
-                : 'text-[#7f8da4] hover:text-[#df8b35] hover:bg-[#202738]'
+                ? 'lit'
+                : 'text-[#8fa0b3] hover:text-[#eb9438] hover:bg-[#152031]'
             }`}
             title="Mi ubicación GPS actual"
             aria-label="Obtener mi ubicación GPS"
           >
             {isLocating ? (
-              <Loader2 className="w-4 h-4 animate-spin text-[#df8b35]" />
+              <Loader2 className="w-4 h-4 animate-spin text-[#eb9438]" />
             ) : hasLocation ? (
-              <LocateFixed className="w-4 h-4 text-[#df8b35]" />
+              <LocateFixed className="w-4 h-4 text-[#eb9438]" />
             ) : (
               <Locate className="w-4 h-4" />
             )}
@@ -877,7 +880,7 @@ export const SABMap: React.FC<SABMapProps> = ({
           <button
             type="button"
             onClick={handleResetView}
-            className="p-2 text-[#7f8da4] hover:text-[#df8b35] hover:bg-[#202738] rounded-xl transition cursor-pointer"
+            className="p-2 text-[#8fa0b3] hover:text-[#eb9438] hover:bg-[#152031] rounded-full transition cursor-pointer"
             title="Centrar en Bogotá"
             aria-label="Centrar en Bogotá"
           >
@@ -890,8 +893,8 @@ export const SABMap: React.FC<SABMapProps> = ({
             onClick={() => setShowRadarControls(!showRadarControls)}
             className={`p-2 rounded-xl transition flex items-center gap-1 text-xs cursor-pointer ${
               showRadar
-                ? 'bg-[#222b3c] text-[#df8b35] ring-1 ring-[#df8b35]/40 shadow-xs'
-                : 'text-[#7f8da4] hover:bg-[#202738] hover:text-white'
+                ? 'lit'
+                : 'text-[#8fa0b3] hover:bg-[#152031] hover:text-white'
             }`}
             title="Ajustes de Radar Meteorológico"
           >
@@ -902,7 +905,7 @@ export const SABMap: React.FC<SABMapProps> = ({
 
         {/* GPS Location Error Toast */}
         {locationError && (
-          <div className="bg-red-950/90 text-white text-xs px-3 py-2 rounded-2xl shadow-xl border border-red-800 max-w-xs animate-fade-in flex items-center gap-2">
+          <div className="glass text-white text-xs px-3 py-2 rounded-2xl border !border-[rgba(248,113,113,0.55)] shadow-[0_0_18px_rgba(248,113,113,0.25)] max-w-xs animate-fade-in flex items-center gap-2">
             <Info className="w-4 h-4 shrink-0 text-red-300" />
             <span>{locationError}</span>
           </div>
@@ -910,13 +913,13 @@ export const SABMap: React.FC<SABMapProps> = ({
 
         {/* Radar Settings Box */}
         {showRadarControls && (
-          <div className="bg-[#151922]/98 backdrop-blur-md rounded-2xl shadow-2xl border border-[#252c3c] p-3.5 w-64 text-xs space-y-3 text-slate-200">
-            <div className="flex items-center justify-between pb-1.5 border-b border-[#252c3c]">
+          <div className="glass rounded-xl shadow-2xl border border-[#1d2938] p-3.5 w-64 text-xs space-y-3 text-slate-200">
+            <div className="flex items-center justify-between pb-1.5 border-b border-[#1d2938]">
               <span className="font-bold text-white">Capa de Radar IDIGER</span>
               <button
                 type="button"
                 onClick={() => setShowRadarControls(false)}
-                className="text-[#718096] hover:text-white cursor-pointer"
+                className="text-[#6f8091] hover:text-white cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -927,16 +930,16 @@ export const SABMap: React.FC<SABMapProps> = ({
                 type="checkbox"
                 checked={showRadar}
                 onChange={(e) => onToggleRadar(e.target.checked)}
-                className="rounded text-[#df8b35] focus:ring-[#df8b35] w-4 h-4 bg-[#11141e] border-[#252c3c]"
+                className="rounded text-[#eb9438] focus:ring-[#eb9438] w-4 h-4 bg-[#0b1220] border-[#1d2938]"
               />
               <span className="font-medium text-slate-200">Mostrar Reflectividad Radar</span>
             </label>
 
             {showRadar && (
               <div className="space-y-1">
-                <div className="flex justify-between text-[11px] text-[#8a9bb2]">
+                <div className="flex justify-between text-[11px] text-[#8fa0b3]">
                   <span>Opacidad de la nube:</span>
-                  <span className="font-semibold text-[#df8b35]">{Math.round(radarOpacity * 100)}%</span>
+                  <span className="font-semibold text-[#eb9438]">{Math.round(radarOpacity * 100)}%</span>
                 </div>
                 <input
                   type="range"
@@ -945,26 +948,26 @@ export const SABMap: React.FC<SABMapProps> = ({
                   step="0.05"
                   value={radarOpacity}
                   onChange={(e) => onChangeRadarOpacity(parseFloat(e.target.value))}
-                  className="w-full accent-[#df8b35] h-1.5 bg-[#11141e] rounded-lg cursor-pointer"
+                  className="w-full accent-[#eb9438] h-1.5 bg-[#0b1220] rounded-lg cursor-pointer"
                 />
               </div>
             )}
 
-            <label className="flex items-center gap-2 cursor-pointer pt-1 border-t border-[#252c3c]">
+            <label className="flex items-center gap-2 cursor-pointer pt-1 border-t border-[#1d2938]">
               <input
                 type="checkbox"
                 checked={showLocalidades}
                 onChange={(e) => setShowLocalidades(e.target.checked)}
-                className="rounded text-[#df8b35] focus:ring-[#df8b35] w-4 h-4 bg-[#11141e] border-[#252c3c]"
+                className="rounded text-[#eb9438] focus:ring-[#eb9438] w-4 h-4 bg-[#0b1220] border-[#1d2938]"
               />
               <span className="font-medium text-slate-200">Polígonos de Localidades</span>
             </label>
 
             {/* Radar Refresh Controls */}
-            <div className="pt-2 border-t border-[#252c3c] space-y-2 text-[11px] text-[#8a9bb2]">
+            <div className="pt-2 border-t border-[#1d2938] space-y-2 text-[11px] text-[#8fa0b3]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#df8b35] animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#eb9438] animate-pulse"></span>
                   <span>Refresco: <strong className="text-slate-200">En vivo (45s)</strong></span>
                 </div>
                 {onRefreshRadar && (
@@ -975,7 +978,7 @@ export const SABMap: React.FC<SABMapProps> = ({
                       onRefreshRadar();
                       setTimeout(() => setIsRadarRefreshing(false), 1200);
                     }}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#222b3c] text-[#df8b35] hover:bg-[#2a3449] border border-[#df8b35]/30 font-semibold cursor-pointer transition text-[10px]"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#17233a] text-[#eb9438] hover:bg-[#1d2a40] border border-[#eb9438]/30 font-semibold cursor-pointer transition text-[10px]"
                     title="Refrescar capa de radar ahora"
                   >
                     <RefreshCw className={`w-3 h-3 ${isRadarRefreshing ? 'animate-spin' : ''}`} />
@@ -984,27 +987,27 @@ export const SABMap: React.FC<SABMapProps> = ({
                 )}
               </div>
               {radarScanTime && (
-                <div className="bg-[#11141e] border border-[#252c3c] rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[10px]">
-                  <span className="text-[#718096]">Último escaneo IDIGER:</span>
-                  <span className="font-bold text-[#df8b35]">{radarScanTime}</span>
+                <div className="bg-[#0b1220] border border-[#1d2938] rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[10px]">
+                  <span className="text-[#6f8091]">Último escaneo IDIGER:</span>
+                  <span className="font-bold text-[#eb9438]">{radarScanTime}</span>
                 </div>
               )}
             </div>
 
             {/* Reflectivity Scale Preview */}
-            <div className="pt-1.5 border-t border-[#252c3c] space-y-2">
+            <div className="pt-1.5 border-t border-[#1d2938] space-y-2">
               <button
                 type="button"
                 onClick={() => setShowRadarScale(!showRadarScale)}
                 className="w-full flex items-center justify-between text-[11px] text-slate-300 hover:text-white font-medium cursor-pointer"
               >
                 <span>Escala Reflectividad (dBZ)</span>
-                <span className="text-[10px] text-[#df8b35] font-semibold">
+                <span className="text-[10px] text-[#eb9438] font-semibold">
                   {showRadarScale ? 'Ocultar ▲' : 'Ver ▼'}
                 </span>
               </button>
               {showRadarScale && (
-                <div className="p-1.5 bg-[#11141e] rounded-xl border border-[#252c3c] flex justify-center">
+                <div className="p-1.5 bg-[#0b1220] rounded-xl border border-[#1d2938] flex justify-center">
                   <img
                     src="/sab-assets/barraRadar.png"
                     alt="Escala de reflectividad radar IDIGER (dBZ)"
@@ -1020,7 +1023,7 @@ export const SABMap: React.FC<SABMapProps> = ({
       {/* Radar Live & Animated Controls (Icon + Time only, matching reference styling) */}
       {showRadar && currentSensorType === 5 && radarFrames.length > 0 && (
         <div className="absolute top-3 left-3 sm:left-4 z-20 pointer-events-auto transition-all duration-200">
-          <div className="flex items-center gap-1 sm:gap-1.5 bg-[#151922]/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border border-[#252c3c] text-slate-100">
+          <div className="flex items-center gap-1 sm:gap-1.5 glass p-1.5 rounded-full shadow-xl border border-[#1d2938] text-slate-100">
             {/* OPTION 1: LIVE (Amber glowing dot + Amber Time) */}
             <button
               type="button"
@@ -1031,17 +1034,17 @@ export const SABMap: React.FC<SABMapProps> = ({
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer select-none shrink-0 ${
                 isLiveMode
-                  ? 'bg-[#1c2230] text-[#df8b35] border border-[#df8b35]/40 shadow-xs ring-1 ring-[#df8b35]/30'
-                  : 'text-[#718096] hover:text-white hover:bg-[#1c2230]'
+                  ? 'lit'
+                  : 'text-[#6f8091] hover:text-white hover:bg-[#152031]'
               }`}
               title={`En vivo: ${radarFrames[radarFrames.length - 1]?.timeStr || radarScanTime || ''}`}
               aria-label="En vivo"
             >
               <span className="relative flex h-2.5 w-2.5 shrink-0">
-                <span className={`inline-flex h-full w-full rounded-full bg-[#df8b35] ${isLiveMode ? 'animate-ping opacity-75 absolute' : 'opacity-40'}`}></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#df8b35]"></span>
+                <span className={`inline-flex h-full w-full rounded-full bg-[#eb9438] ${isLiveMode ? 'animate-ping opacity-75 absolute' : 'opacity-40'}`}></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#eb9438]"></span>
               </span>
-              <span className="font-mono text-xs font-bold text-[#df8b35]">
+              <span className="font-mono text-xs font-bold text-[#eb9438]">
                 {radarFrames[radarFrames.length - 1]?.timeStr || radarScanTime || '--:--'}
               </span>
             </button>
@@ -1062,18 +1065,18 @@ export const SABMap: React.FC<SABMapProps> = ({
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer select-none shrink-0 ${
                 !isLiveMode
-                  ? 'bg-[#1c2230] text-[#df8b35] border border-[#df8b35]/40 shadow-xs ring-1 ring-[#df8b35]/30'
-                  : 'text-[#718096] hover:text-white hover:bg-[#1c2230]'
+                  ? 'lit'
+                  : 'text-[#6f8091] hover:text-white hover:bg-[#152031]'
               }`}
               title={`Animado (2×): ${radarFrames[activeFrameIndex]?.timeStr || ''}`}
               aria-label="Animado"
             >
               {isPlayingRadar ? (
-                <Pause className="w-3.5 h-3.5 text-[#df8b35] fill-current shrink-0" />
+                <Pause className="w-3.5 h-3.5 text-[#eb9438] fill-current shrink-0" />
               ) : (
-                <Play className="w-3.5 h-3.5 text-[#df8b35] fill-current shrink-0" />
+                <Play className="w-3.5 h-3.5 text-[#eb9438] fill-current shrink-0" />
               )}
-              <span className="font-mono text-xs font-bold text-[#df8b35]">
+              <span className="font-mono text-xs font-bold text-[#eb9438]">
                 {radarFrames[activeFrameIndex]?.timeStr || '--:--'}
               </span>
             </button>

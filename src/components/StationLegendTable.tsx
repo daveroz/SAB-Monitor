@@ -145,12 +145,12 @@ export const StationLegendTable: React.FC<StationLegendTableProps> = ({
   const getHeaderIcon = () => {
     switch (currentSensorType) {
       case 1:
-        return <Thermometer className="w-4 h-4 text-[#df8b35]" />;
+        return <Thermometer className="w-4 h-4 text-[#eb9438]" />;
       case 2:
-        return <Droplets className="w-4 h-4 text-[#df8b35]" />;
+        return <Droplets className="w-4 h-4 text-[#eb9438]" />;
       case 5:
       default:
-        return <CloudRain className="w-4 h-4 text-[#df8b35]" />;
+        return <CloudRain className="w-4 h-4 text-[#eb9438]" />;
     }
   };
 
@@ -167,38 +167,38 @@ export const StationLegendTable: React.FC<StationLegendTableProps> = ({
   };
 
   return (
-    <div className="bg-[#13161f]/95 backdrop-blur-md rounded-2xl shadow-2xl border border-[#2a231b] overflow-hidden text-xs text-slate-100 transition-all duration-300 w-72 sm:w-80 select-none">
+    <div className="glass rounded-xl shadow-2xl overflow-hidden text-xs text-slate-100 transition-all duration-300 w-72 sm:w-80 select-none">
       {/* Title Header - Click to toggle expand/collapse, matching reference image */}
       <div
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="bg-[#13161f] text-white px-3 py-2 flex items-center justify-between cursor-pointer hover:bg-[#181c27] transition"
+        className="bg-transparent text-white px-3 py-2 flex items-center justify-between cursor-pointer hover:bg-[rgba(236,246,255,0.05)] transition"
       >
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-[#df8b35]/15 border border-[#df8b35]/30 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-md lit flex items-center justify-center shrink-0">
             {getHeaderIcon()}
           </div>
-          <div className="h-6 w-px bg-[#382e24] shrink-0" />
+          <div className="h-6 w-px bg-[rgba(170,220,255,0.16)] shrink-0" />
           <div>
-            <span className="font-bold tracking-wide text-xs sm:text-[13px] block text-[#df8b35]">
+            <span className="eyebrow block text-[#f0ae6a]">
               {stats.totalStations} Estaciones IDIGER
             </span>
-            <span className="text-[10px] text-[#7b8192] block font-normal leading-tight">
+            <span className="text-[10px] text-[#8fa0b3] block font-normal leading-tight">
               {getHeaderSublabel()}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           {hasFilterActive && (
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-xl text-[10px] bg-[#df8b35]/20 text-[#df8b35] border border-[#df8b35]/40 font-semibold mr-1">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] lit font-semibold mr-1 uppercase tracking-[0.14em]">
               Filtro
             </span>
           )}
-          <span className="text-[11px] text-[#7b8192] font-medium">
+          <span className="text-[11px] text-[#8fa0b3] font-medium">
             {isCollapsed ? 'Leyenda' : ''}
           </span>
           <button
             type="button"
-            className="text-[#7b8192] hover:text-white p-0.5 rounded-xl cursor-pointer"
+            className="text-[#8fa0b3] hover:text-white p-0.5 rounded-xl cursor-pointer"
             title={isCollapsed ? 'Expandir leyenda' : 'Colapsar leyenda'}
           >
             {isCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}

@@ -1,7 +1,7 @@
 /**
  * Bogotá Major Arterial Avenue Network (Red Vial Principal)
  * High-precision GeoJSON LineStrings for Bogotá's iconic avenues
- * Rendered in glowing amber (#df8b35) over the dark charcoal basemap
+ * Rendered in glowing amber (#eb9438) over the dark charcoal basemap
  */
 
 export const AVENIDAS_BOGOTA_GEOJSON = {
