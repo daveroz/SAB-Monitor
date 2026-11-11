@@ -11,6 +11,7 @@ import {
 import { SENSOR_TYPES, SensorTypeId, Station } from '../types/sab';
 import { SABStats, formatTime24, isCurrentlyRaining } from '../utils/sabLogic';
 import { rainStatusText } from '../utils/rainStatus';
+import { LightShow } from './LightShow';
 
 export interface ClosestStationInfo {
   station: Station;
@@ -64,8 +65,9 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="bg-[rgba(6,10,16,0.55)] backdrop-blur-md text-white border-b border-[rgba(170,220,255,0.1)] relative z-30 select-none">
-      <div className="w-full px-2.5 sm:px-4 py-2">
+    <header className="bg-[rgba(5,7,11,0.82)] text-white border-b border-[rgba(170,220,255,0.1)] relative z-30 select-none">
+      <LightShow />
+      <div className="relative z-10 w-full px-2.5 sm:px-4 py-2.5">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           {/* LINE 1: VARIABLE SELECTOR TABS (Lluvias, Temperatura, Humedad - Squircles) */}
           <nav
