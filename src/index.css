@@ -17,9 +17,177 @@
   font-display: swap;
 }
 
+/* Light in fog, the visual language shared with Deco Launcher and Worldly: a night stage in haze,
+   glass panels with hairline edges, and one colour of light, the app's own amber. */
 @theme {
   --font-sans: "Carbon Plus", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Carbon Plus", ui-monospace, monospace;
+  /* Cool night tones in place of Tailwind's slate: titles to grounds. */
+  --color-slate-50: #eef4f8;
+  --color-slate-100: #e2eaf0;
+  --color-slate-200: #c9d4dd;
+  --color-slate-300: #aebbc8;
+  --color-slate-400: #8fa0b3;
+  --color-slate-500: #6f8091;
+  --color-slate-600: #4a5868;
+  --color-slate-700: #233041;
+  --color-slate-800: #152031;
+  --color-slate-900: #0b1220;
+  --color-slate-950: #05070b;
+  /* Amber is the one light. */
+  --color-amber-300: #f0ae6a;
+  --color-amber-400: #eb9438;
+  --color-amber-500: #e08a33;
+}
+
+:root {
+  --night: #05070b;
+  --panel: #0b1220;
+  --glass: rgba(8, 12, 18, 0.72);
+  --hairline: rgba(170, 220, 255, 0.12);
+  --hairline-strong: rgba(170, 220, 255, 0.3);
+  --text: #eef4f8;
+  --text-soft: #c9d4dd;
+  --muted: #8fa0b3;
+  --key: #eb9438;
+  --key-label: #f0ae6a;
+  --led: #fbefe2;
+}
+
+body {
+  background: var(--night);
+}
+
+/* Glass over the light, with a hairline edge. */
+.glass {
+  background: var(--glass) !important;
+  border: 1px solid var(--hairline) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Something that's on (the chosen tab, a lit badge): a touch of the light on the glass, with an
+   amber edge and a soft glow, instead of a solid amber block. */
+.lit {
+  background: rgba(235, 148, 56, 0.14) !important;
+  border: 1px solid rgba(235, 148, 56, 0.6) !important;
+  color: #fff !important;
+  box-shadow: 0 0 18px rgba(235, 148, 56, 0.22), inset 0 1px 0 rgba(251, 239, 226, 0.12) !important;
+}
+.lit svg {
+  color: var(--key) !important;
+}
+
+/* Small labels: bold capitals, spaced out, like markings on a piece of equipment. */
+.eyebrow {
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 1px solid var(--led);
+  outline-offset: 2px;
+}
+
+/* ---- The stage: haze washes of the light, fog drifting through, a rig of small lamps overhead,
+   and a fine grain. Behind everything, and a faint veil of it over the map. ---- */
+.sab-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+  background: var(--night);
+}
+.sab-stage .wash {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+}
+.sab-stage .wash.key {
+  width: 120vmax;
+  height: 120vmax;
+  right: -55vmax;
+  top: -60vmax;
+  background: radial-gradient(circle, rgba(235, 148, 56, 0.2) 0%, rgba(235, 148, 56, 0) 62%);
+  animation: sabDrift 46s ease-in-out infinite alternate;
+}
+.sab-stage .wash.low {
+  width: 100vmax;
+  height: 100vmax;
+  left: -50vmax;
+  bottom: -55vmax;
+  background: radial-gradient(circle, rgba(235, 148, 56, 0.09) 0%, rgba(235, 148, 56, 0) 62%);
+  animation: sabDrift 60s ease-in-out infinite alternate-reverse;
+}
+.sab-stage .fog {
+  position: absolute;
+  left: -40%;
+  width: 180%;
+  height: 28vh;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(180, 200, 225, 0.05) 0%, rgba(180, 200, 225, 0) 70%);
+  animation: sabFog 70s linear infinite;
+}
+.sab-stage .fog.one { top: 30%; }
+.sab-stage .fog.two { top: 62%; animation-duration: 95s; animation-delay: -40s; }
+.sab-rig {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+}
+.sab-rig span {
+  width: 6px;
+  height: 2px;
+  background: var(--led);
+  box-shadow: 0 0 6px var(--key), 0 0 18px rgba(235, 148, 56, 0.5);
+  animation: sabChase 7s ease-in-out infinite;
+  opacity: 0.25;
+}
+.sab-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+}
+/* Localities: thin amber lines that glow a little, like light on the stage. */
+.sab-locality {
+  filter: drop-shadow(0 0 3px rgba(235, 148, 56, 0.55));
+}
+
+/* Over the map: a faint veil of the haze, so the stage carries on across it. */
+.sab-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 450;
+  background:
+    radial-gradient(ellipse 90% 60% at 85% 0%, rgba(235, 148, 56, 0.08) 0%, rgba(235, 148, 56, 0) 70%),
+    radial-gradient(ellipse 80% 50% at 10% 100%, rgba(235, 148, 56, 0.05) 0%, rgba(235, 148, 56, 0) 70%);
+  mix-blend-mode: screen;
+}
+@keyframes sabDrift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-6vmax, 4vmax); }
+}
+@keyframes sabFog {
+  from { transform: translateX(-20%); }
+  to { transform: translateX(20%); }
+}
+@keyframes sabChase {
+  0%, 100% { opacity: 0.22; }
+  12% { opacity: 1; }
+  30% { opacity: 0.22; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sab-stage *, .sab-rig span { animation: none !important; }
 }
 
 html, body, button, input, select, textarea {
@@ -29,12 +197,13 @@ html, body, button, input, select, textarea {
 /* Leaflet Dark Theme & Custom Popup Styling */
 .leaflet-popup-content-wrapper {
   padding: 0 !important;
-  border-radius: 1rem !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
-  background-color: #11141e !important;
-  color: #f1f5f9 !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(223, 139, 53, 0.15) !important;
-  border: 1px solid #2b231b !important;
+  background-color: rgba(8, 12, 18, 0.92) !important;
+  backdrop-filter: blur(10px) !important;
+  color: #eef4f8 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 24px rgba(235, 148, 56, 0.12) !important;
+  border: 1px solid var(--hairline) !important;
 }
 
 .leaflet-popup-content {
@@ -43,21 +212,21 @@ html, body, button, input, select, textarea {
 }
 
 .leaflet-popup-tip {
-  background-color: #11141e !important;
+  background-color: #0b1220 !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.6) !important;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-  color: #8b97a8 !important;
+  color: #8fa0b3 !important;
   padding: 6px 8px 0 0 !important;
 }
 
 .leaflet-container a.leaflet-popup-close-button:hover {
-  color: #f8fafc !important;
+  color: #eef4f8 !important;
 }
 
 .leaflet-container {
-  background-color: #0c0f17 !important;
+  background-color: transparent !important;
   font-family: inherit !important;
   outline: none !important;
   -webkit-tap-highlight-color: transparent !important;
@@ -65,30 +234,30 @@ html, body, button, input, select, textarea {
 
 /* Dark Zoom Controls */
 .leaflet-bar {
-  border: 1px solid #252c3c !important;
-  border-radius: 0.75rem !important;
+  border: 1px solid var(--hairline) !important;
+  border-radius: 999px !important;
   overflow: hidden !important;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6) !important;
 }
 
 .leaflet-bar a {
-  background-color: #151922 !important;
-  color: #cbd5e1 !important;
-  border-bottom: 1px solid #252c3c !important;
+  background-color: var(--glass) !important;
+  color: #c9d4dd !important;
+  border-bottom: 1px solid var(--hairline) !important;
   transition: background-color 0.15s ease, color 0.15s ease !important;
 }
 
 .leaflet-bar a:hover {
-  background-color: #202738 !important;
-  color: #df8b35 !important;
+  background-color: #152031 !important;
+  color: #eb9438 !important;
 }
 
-/* Original Esri Dark Theme Tiles */
+/* Esri dark tiles, cooled and darkened toward the night so the haze and the amber read over them. */
 .dark-tiles,
 .dark-tiles .leaflet-tile,
 img.dark-tiles,
 .leaflet-tile-pane img.dark-tiles {
-  filter: brightness(0.95) contrast(1.05) !important;
+  filter: brightness(0.72) contrast(1.08) saturate(0.6) hue-rotate(-8deg) !important;
 }
 
 /* Labels layer: clean crisp labels */
@@ -106,7 +275,7 @@ img.map-tiles-light-minimal {
 }
 
 .leaflet-bar a.leaflet-disabled {
-  background-color: #0f121a !important;
+  background-color: #070a10 !important;
   color: #475569 !important;
 }
 
@@ -118,12 +287,12 @@ img.map-tiles-light-minimal {
   border-top-left-radius: 6px !important;
   padding: 2px 8px !important;
   font-size: 11px !important;
-  border-top: 1px solid #252c3c !important;
-  border-left: 1px solid #252c3c !important;
+  border-top: 1px solid #1d2938 !important;
+  border-left: 1px solid #1d2938 !important;
 }
 
 .leaflet-control-attribution a {
-  color: #b4753c !important;
+  color: #d9a066 !important;
 }
 
 /* Permanent Clean Locality Text on Map (no box) */
@@ -142,10 +311,10 @@ img.map-tiles-light-minimal {
 
 /* Locality Dark Tooltip */
 .sab-locality-tooltip {
-  background: rgba(17, 20, 30, 0.94) !important;
+  background: rgba(8, 12, 18, 0.9) !important;
   backdrop-filter: blur(6px) !important;
-  color: #f8fafc !important;
-  border: 1px solid #362c22 !important;
+  color: #eef4f8 !important;
+  border: 1px solid var(--hairline) !important;
   border-radius: 8px !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7) !important;
   font-weight: 600 !important;

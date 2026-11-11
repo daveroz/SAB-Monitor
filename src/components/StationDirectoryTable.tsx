@@ -138,10 +138,10 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-[#0c0f17] p-4 sm:p-6 text-slate-100">
+    <div className="relative z-10 flex-1 overflow-y-auto bg-transparent p-4 sm:p-6 text-slate-100">
       <div className="max-w-7xl mx-auto space-y-4">
         {/* Top Controls Card */}
-        <div className="bg-[#13161f] p-4 rounded-2xl shadow-sm border border-[#252c3c] space-y-3">
+        <div className="glass p-4 rounded-2xl space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
               <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
@@ -165,10 +165,10 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                 <button
                   type="button"
                   onClick={() => setOnlyRaining(!onlyRaining)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.14em] border transition cursor-pointer ${
                     onlyRaining
-                      ? 'bg-cyan-950/60 border-cyan-500 text-cyan-200 ring-1 ring-cyan-500'
-                      : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800'
+                      ? 'lit text-white'
+                      : 'bg-transparent border-[rgba(170,220,255,0.14)] text-slate-300 hover:bg-[rgba(170,220,255,0.06)]'
                   }`}
                 >
                   <CloudRain className="w-4 h-4 text-cyan-400" />
@@ -179,7 +179,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
           </div>
 
           {/* Search and Dropdowns Filter Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 pt-2 border-t border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 pt-2 border-t border-[rgba(170,220,255,0.1)]">
             {/* Search Input */}
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -188,7 +188,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Buscar por estación o localidad..."
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500"
+                className="w-full pl-9 pr-3 py-2 text-xs bg-[rgba(5,7,11,0.6)] border border-[rgba(170,220,255,0.12)] rounded-full text-slate-200 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-400/60 placeholder-slate-500"
               />
             </div>
 
@@ -197,7 +197,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
               <select
                 value={selectedLocality}
                 onChange={(e) => setSelectedLocality(e.target.value)}
-                className="w-full py-2 px-3 text-xs bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-2 px-3 text-xs bg-[rgba(5,7,11,0.6)] border border-[rgba(170,220,255,0.12)] rounded-full text-slate-200 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-400/60"
               >
                 <option value="TODAS">Todas las Localidades ({localities.length})</option>
                 {localities.map((loc) => (
@@ -213,7 +213,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
               <select
                 value={selectedTechnology}
                 onChange={(e) => setSelectedTechnology(e.target.value)}
-                className="w-full py-2 px-3 text-xs bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-2 px-3 text-xs bg-[rgba(5,7,11,0.6)] border border-[rgba(170,220,255,0.12)] rounded-full text-slate-200 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-400/60"
               >
                 <option value="TODAS">Todas las Tecnologías</option>
                 {technologies.map((t) => (
@@ -229,7 +229,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
               <button
                 type="button"
                 onClick={resetFilters}
-                className="w-full py-2 px-3 text-xs bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 font-medium rounded-xl flex items-center justify-center gap-1.5 transition cursor-pointer"
+                className="w-full py-2 px-3 text-xs bg-transparent hover:bg-[rgba(170,220,255,0.06)] text-slate-200 border border-[rgba(170,220,255,0.16)] font-bold uppercase tracking-[0.14em] rounded-full flex items-center justify-center gap-1.5 transition cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Restablecer Filtros</span>
@@ -239,13 +239,13 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
         </div>
 
         {/* Stations Table */}
-        <div className="bg-slate-900 rounded-xl shadow-sm border border-slate-800 overflow-hidden">
+        <div className="glass rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs divide-y divide-slate-800">
-              <thead className="bg-slate-950 text-slate-300 font-bold uppercase text-[10px] tracking-wider select-none">
+            <table className="w-full text-left text-xs divide-y divide-[rgba(170,220,255,0.08)]">
+              <thead className="bg-[rgba(5,7,11,0.55)] text-slate-300 font-bold uppercase text-[11px] tracking-[0.16em] select-none">
                 <tr>
                   <th
-                    className="py-3 px-4 cursor-pointer hover:bg-slate-800 transition"
+                    className="py-3 px-4 cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                     onClick={() => handleSort('ESTACION')}
                   >
                     <div className="flex items-center gap-1">
@@ -254,7 +254,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                     </div>
                   </th>
                   <th
-                    className="py-3 px-3 cursor-pointer hover:bg-slate-800 transition"
+                    className="py-3 px-3 cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                     onClick={() => handleSort('LOCALIDAD')}
                   >
                     <div className="flex items-center gap-1">
@@ -263,7 +263,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                     </div>
                   </th>
                   <th
-                    className="py-3 px-3 text-right cursor-pointer hover:bg-slate-800 transition"
+                    className="py-3 px-3 text-right cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                     onClick={() => handleSort(currentSensorType === 1 ? 'VALORLECTURA' : 'ACUMULADODIA')}
                   >
                     <div className="flex items-center justify-end gap-1">
@@ -273,7 +273,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                   </th>
                   {currentSensorType === 1 ? (
                     <th
-                      className="py-3 px-3 text-right cursor-pointer hover:bg-slate-800 transition"
+                      className="py-3 px-3 text-right cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                       onClick={() => handleSort('HUMEDAD')}
                     >
                       <div className="flex items-center justify-end gap-1">
@@ -283,7 +283,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                     </th>
                   ) : (
                     <th
-                      className="py-3 px-3 text-right cursor-pointer hover:bg-slate-800 transition"
+                      className="py-3 px-3 text-right cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                       onClick={() => handleSort('VALORLECTURA')}
                     >
                       <div className="flex items-center justify-end gap-1">
@@ -293,7 +293,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                     </th>
                   )}
                   <th
-                    className="py-3 px-3 text-center cursor-pointer hover:bg-slate-800 transition"
+                    className="py-3 px-3 text-center cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                     onClick={() => handleSort('ALTITUD')}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -302,7 +302,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                     </div>
                   </th>
                   <th
-                    className="py-3 px-3 cursor-pointer hover:bg-slate-800 transition"
+                    className="py-3 px-3 cursor-pointer hover:bg-[rgba(170,220,255,0.06)] transition"
                     onClick={() => handleSort('FECHALECTURA')}
                   >
                     <div className="flex items-center gap-1">
@@ -313,7 +313,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                   <th className="py-3 px-4 text-center">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 bg-slate-900">
+              <tbody className="divide-y divide-[rgba(170,220,255,0.08)] bg-transparent">
                 {filteredStations.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-12 text-center text-slate-500">
@@ -332,7 +332,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                       const isNormalTemp = !isNaN(temp) && temp < 50 && temp > -20;
 
                       return (
-                        <tr key={station.IDSENSOR} className="hover:bg-slate-800/60 transition">
+                        <tr key={station.IDSENSOR} className="hover:bg-[rgba(170,220,255,0.06)]/60 transition">
                           {/* Name & ID */}
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-2">
@@ -385,7 +385,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onSelectStationOnMap(station)}
-                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                                className="p-1.5 rounded-full bg-transparent hover:bg-[rgba(235,148,56,0.14)] text-slate-300 hover:text-white border border-[rgba(170,220,255,0.14)] hover:border-[rgba(235,148,56,0.6)] transition cursor-pointer"
                                 title="Ver en el mapa"
                               >
                                 <MapPin className="w-3.5 h-3.5" />
@@ -393,7 +393,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onOpenStationHistory(station)}
-                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                                className="p-1.5 rounded-full bg-transparent hover:bg-[rgba(235,148,56,0.14)] text-slate-300 hover:text-white border border-[rgba(170,220,255,0.14)] hover:border-[rgba(235,148,56,0.6)] transition cursor-pointer"
                                 title="Ver histórico 6 horas"
                               >
                                 <BarChart2 className="w-3.5 h-3.5" />
@@ -410,7 +410,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                     const category = classifyRainfall(rain);
 
                     return (
-                      <tr key={station.IDSENSOR} className="hover:bg-slate-800/60 transition">
+                      <tr key={station.IDSENSOR} className="hover:bg-[rgba(170,220,255,0.06)]/60 transition">
                         {/* Name & ID */}
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-2">
@@ -472,7 +472,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                             <button
                               type="button"
                               onClick={() => onSelectStationOnMap(station)}
-                              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                              className="p-1.5 rounded-full bg-transparent hover:bg-[rgba(235,148,56,0.14)] text-slate-300 hover:text-white border border-[rgba(170,220,255,0.14)] hover:border-[rgba(235,148,56,0.6)] transition cursor-pointer"
                               title="Ver en el mapa"
                             >
                               <MapPin className="w-3.5 h-3.5" />
@@ -480,7 +480,7 @@ export const StationDirectoryTable: React.FC<StationDirectoryTableProps> = ({
                             <button
                               type="button"
                               onClick={() => onOpenStationHistory(station)}
-                              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                              className="p-1.5 rounded-full bg-transparent hover:bg-[rgba(235,148,56,0.14)] text-slate-300 hover:text-white border border-[rgba(170,220,255,0.14)] hover:border-[rgba(235,148,56,0.6)] transition cursor-pointer"
                               title="Ver histórico 6 horas"
                             >
                               <BarChart2 className="w-3.5 h-3.5" />

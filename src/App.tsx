@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Header, ClosestStationInfo } from './components/Header';
+import { Stage } from './components/Stage';
 import { SABMap } from './components/SABMap';
 import { StationLegendTable } from './components/StationLegendTable';
 import { StationDetailsModal } from './components/StationDetailsModal';
@@ -176,7 +177,10 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#0c0f17] font-sans select-none">
+    <div className="relative flex flex-col h-screen w-screen overflow-hidden font-sans select-none">
+      {/* The night stage behind everything */}
+      <Stage />
+
       {/* Top Main Navigation Header */}
       <Header
         currentSensorType={currentSensorType}
@@ -193,7 +197,7 @@ export default function App() {
       />
 
       {/* Main View Area */}
-      <main className="flex-1 relative overflow-hidden flex flex-col">
+      <main className="flex-1 relative z-10 overflow-hidden flex flex-col">
         {viewMode === 'map' ? (
           <div className="relative w-full h-full">
             {/* Full Leaflet Map */}
