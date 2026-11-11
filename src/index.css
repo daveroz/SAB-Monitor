@@ -43,7 +43,8 @@
 :root {
   --night: #05070b;
   --panel: #0b1220;
-  --glass: rgba(8, 12, 18, 0.72);
+  /* Solid, so the map and the light show stay behind the panels: the light glows around them. */
+  --glass: #0a0e15;
   --hairline: rgba(170, 220, 255, 0.12);
   --hairline-strong: rgba(170, 220, 255, 0.3);
   --text: #eef4f8;
@@ -58,7 +59,7 @@ body {
   background: var(--night);
 }
 
-/* Glass over the light, with a hairline edge. */
+/* A panel over the light: solid night with a hairline edge. */
 .glass {
   background: var(--glass) !important;
   border: 1px solid var(--hairline) !important;
@@ -69,7 +70,7 @@ body {
 /* Something that's on (the chosen tab, a lit badge): a touch of the light on the glass, with an
    amber edge and a soft glow, instead of a solid amber block. */
 .lit {
-  background: rgba(235, 148, 56, 0.14) !important;
+  background: linear-gradient(rgba(235, 148, 56, 0.16), rgba(235, 148, 56, 0.16)), var(--glass) !important;
   border: 1px solid rgba(235, 148, 56, 0.6) !important;
   color: #fff !important;
   box-shadow: 0 0 18px rgba(235, 148, 56, 0.22), inset 0 1px 0 rgba(251, 239, 226, 0.12) !important;
@@ -93,8 +94,8 @@ a:focus-visible,
   outline-offset: 2px;
 }
 
-/* ---- The stage: haze washes of the light, fog drifting through, a rig of small lamps overhead,
-   and a fine grain. Behind everything, and a faint veil of it over the map. ---- */
+/* ---- The stage: haze washes of the light, fog drifting through, and a fine grain. Behind
+   everything but the map, which stays plain night. ---- */
 .sab-stage {
   position: fixed;
   inset: 0;
@@ -135,44 +136,60 @@ a:focus-visible,
 }
 .sab-stage .fog.one { top: 30%; }
 .sab-stage .fog.two { top: 62%; animation-duration: 95s; animation-delay: -40s; }
-.sab-rig {
-  position: absolute;
-  top: 3px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
-}
-.sab-rig span {
-  width: 6px;
-  height: 2px;
-  background: var(--led);
-  box-shadow: 0 0 6px var(--key), 0 0 18px rgba(235, 148, 56, 0.5);
-  animation: sabChase 7s ease-in-out infinite;
-  opacity: 0.25;
-}
 .sab-grain {
   position: absolute;
   inset: 0;
   opacity: 0.05;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
 }
+/* The ceiling lamps in the menu on top: small hot cores with a soft amber glow, a slow chase running
+   along the row. */
+.sab-rig {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+  z-index: 0;
+}
+.sab-rig span {
+  position: relative;
+  width: 6px;
+  height: 2px;
+  background: var(--led);
+  box-shadow: 0 0 5px var(--key), 0 0 14px rgba(235, 148, 56, 0.55);
+  animation: sabChase 7s ease-in-out infinite;
+  opacity: 0.25;
+}
+/* The rig alternates the amber and its white, as on the launcher. */
+.sab-rig span:nth-child(odd) {
+  background: #f6c595;
+}
+/* Each lamp's soft glow in the haze around it. */
+.sab-rig span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 84px;
+  height: 52px;
+  transform: translate(-50%, -42%);
+  background: radial-gradient(closest-side, rgba(235, 148, 56, 0.34), rgba(235, 148, 56, 0.1) 55%, rgba(235, 148, 56, 0));
+  pointer-events: none;
+}
+@keyframes sabChase {
+  0%, 100% { opacity: 0.25; }
+  12% { opacity: 1; }
+  30% { opacity: 0.25; }
+}
+
 /* Localities: thin amber lines that glow a little, like light on the stage. */
 .sab-locality {
   filter: drop-shadow(0 0 3px rgba(235, 148, 56, 0.55));
 }
 
-/* Over the map: a faint veil of the haze, so the stage carries on across it. */
-.sab-veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 450;
-  background:
-    radial-gradient(ellipse 90% 60% at 85% 0%, rgba(235, 148, 56, 0.08) 0%, rgba(235, 148, 56, 0) 70%),
-    radial-gradient(ellipse 80% 50% at 10% 100%, rgba(235, 148, 56, 0.05) 0%, rgba(235, 148, 56, 0) 70%);
-  mix-blend-mode: screen;
-}
 @keyframes sabDrift {
   from { transform: translate(0, 0); }
   to { transform: translate(-6vmax, 4vmax); }
@@ -181,13 +198,9 @@ a:focus-visible,
   from { transform: translateX(-20%); }
   to { transform: translateX(20%); }
 }
-@keyframes sabChase {
-  0%, 100% { opacity: 0.22; }
-  12% { opacity: 1; }
-  30% { opacity: 0.22; }
-}
 @media (prefers-reduced-motion: reduce) {
   .sab-stage *, .sab-rig span { animation: none !important; }
+  .sab-rig span { opacity: 0.6; }
 }
 
 html, body, button, input, select, textarea {
@@ -226,7 +239,7 @@ html, body, button, input, select, textarea {
 }
 
 .leaflet-container {
-  background-color: transparent !important;
+  background-color: #05070b !important; /* the map stays plain night: no glow behind it */
   font-family: inherit !important;
   outline: none !important;
   -webkit-tap-highlight-color: transparent !important;

@@ -802,7 +802,7 @@ export const SABMap: React.FC<SABMapProps> = ({
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-transparent">
+    <div className="relative w-full h-full overflow-hidden bg-[#05070b]">
       {/* Map DOM Element */}
       <div
         ref={mapContainerRef}
@@ -810,7 +810,6 @@ export const SABMap: React.FC<SABMapProps> = ({
         aria-label="Mapa de Bogotá"
       />
       {/* A faint veil of the stage's haze over the map, under the stations */}
-      <div className="sab-veil" aria-hidden="true" />
 
       {/* Top Right Map Controls: Basemap, GPS, Reset, and Radar */}
       <div className="absolute top-3 right-3 sm:right-4 z-20 flex flex-col items-end gap-2">

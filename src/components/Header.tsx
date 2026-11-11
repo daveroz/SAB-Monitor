@@ -64,8 +64,14 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="bg-[rgba(6,10,16,0.55)] backdrop-blur-md text-white border-b border-[rgba(170,220,255,0.1)] relative z-30 select-none">
-      <div className="w-full px-2.5 sm:px-4 py-2">
+    <header className="bg-[rgba(5,7,11,0.82)] text-white border-b border-[rgba(170,220,255,0.1)] relative z-30 select-none">
+      {/* Small lamps along the ceiling, running a slow chase, like a lighting rig seen through haze. */}
+      <div className="sab-rig" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, i) => (
+          <span key={i} style={{ animationDelay: `${(i / 9) * 7}s` }} />
+        ))}
+      </div>
+      <div className="relative z-10 w-full px-2.5 sm:px-4 pt-4 pb-2.5">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           {/* LINE 1: VARIABLE SELECTOR TABS (Lluvias, Temperatura, Humedad - Squircles) */}
           <nav
